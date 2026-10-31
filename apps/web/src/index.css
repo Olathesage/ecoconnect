@@ -1,15 +1,99 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  color: #173b2b;
-  background: #f4f8f3;
+:root {
+  --eco-forest: #004d34;
+  --eco-emerald-brand: #006b42;
+  --eco-mint-bg: #e8f5e9;
+  --eco-soft-green: #ecfdf5;
+  --eco-page-bg: #f8fafc;
+  --eco-heading-text: #0f172a;
+  --eco-body-text: #475569;
+  --eco-content-muted: #64748b;
+  --eco-border-default: #e2e8f0;
+
+  --eco-status-pending: #f59e0b;
+  --eco-status-pending-bg: #fef3c7;
+  --eco-status-pending-border: #fde68a;
+  --eco-status-forwarded: #0284c7;
+  --eco-status-forwarded-bg: #e0f2fe;
+  --eco-status-forwarded-border: #bae6fd;
+  --eco-status-progress: #7c3aed;
+  --eco-status-progress-bg: #ede9fe;
+  --eco-status-progress-border: #ddd6fe;
+  --eco-status-resolved: #006b42;
+  --eco-status-resolved-bg: #ecfdf5;
+  --eco-status-resolved-border: #a7f3d0;
+
+  --eco-severity-low: #006b42;
+  --eco-severity-low-bg: #ecfdf5;
+  --eco-severity-low-border: #a7f3d0;
+  --eco-severity-medium: #f59e0b;
+  --eco-severity-medium-bg: #fef3c7;
+  --eco-severity-medium-border: #fde68a;
+  --eco-severity-high: #ea580c;
+  --eco-severity-high-bg: #ffedd5;
+  --eco-severity-high-border: #fed7aa;
+  --eco-severity-urgent: #dc2626;
+  --eco-severity-urgent-bg: #fee2e2;
+  --eco-severity-urgent-border: #fecaca;
 }
-main {
-  max-width: 56rem;
-  margin: 4rem auto;
-  padding: 0 1.5rem;
+
+@theme inline {
+  --font-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+  --color-forest: var(--eco-forest);
+  --color-emerald-brand: var(--eco-emerald-brand);
+  --color-mint-bg: var(--eco-mint-bg);
+  --color-soft-green: var(--eco-soft-green);
+  --color-page-bg: var(--eco-page-bg);
+  --color-heading-text: var(--eco-heading-text);
+  --color-body-text: var(--eco-body-text);
+  --color-content-muted: var(--eco-content-muted);
+  --color-border-default: var(--eco-border-default);
+
+  --color-status-pending: var(--eco-status-pending);
+  --color-status-pending-bg: var(--eco-status-pending-bg);
+  --color-status-pending-border: var(--eco-status-pending-border);
+  --color-status-forwarded: var(--eco-status-forwarded);
+  --color-status-forwarded-bg: var(--eco-status-forwarded-bg);
+  --color-status-forwarded-border: var(--eco-status-forwarded-border);
+  --color-status-progress: var(--eco-status-progress);
+  --color-status-progress-bg: var(--eco-status-progress-bg);
+  --color-status-progress-border: var(--eco-status-progress-border);
+  --color-status-resolved: var(--eco-status-resolved);
+  --color-status-resolved-bg: var(--eco-status-resolved-bg);
+  --color-status-resolved-border: var(--eco-status-resolved-border);
+
+  --color-severity-low: var(--eco-severity-low);
+  --color-severity-low-bg: var(--eco-severity-low-bg);
+  --color-severity-low-border: var(--eco-severity-low-border);
+  --color-severity-medium: var(--eco-severity-medium);
+  --color-severity-medium-bg: var(--eco-severity-medium-bg);
+  --color-severity-medium-border: var(--eco-severity-medium-border);
+  --color-severity-high: var(--eco-severity-high);
+  --color-severity-high-bg: var(--eco-severity-high-bg);
+  --color-severity-high-border: var(--eco-severity-high-border);
+  --color-severity-urgent: var(--eco-severity-urgent);
+  --color-severity-urgent-bg: var(--eco-severity-urgent-bg);
+  --color-severity-urgent-border: var(--eco-severity-urgent-border);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--eco-page-bg);
+    color: var(--eco-body-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #0F172A;
+    font-weight: 700;
+  }
 }
