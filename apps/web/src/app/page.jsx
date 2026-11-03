@@ -1,6 +1,8 @@
-import { useNavigate } from 'react-router-dom'
-import { Button } from '../components'
-import heroImage from '../assets/hero.png'
+'use client'
+
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
+import { Button } from '@/components'
 
 const features = [
   {
@@ -18,7 +20,7 @@ const features = [
 ]
 
 export default function Landing() {
-  const navigate = useNavigate()
+  const router = useRouter()
 
   return (
     <div className="min-h-screen bg-page-bg">
@@ -38,10 +40,10 @@ export default function Landing() {
             <span className="text-lg font-extrabold text-heading-text">EcoConnect Ekiti</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={() => navigate('/track')}>
+            <Button variant="ghost" size="sm" onClick={() => router.push('/track')}>
               Track a Report
             </Button>
-            <Button size="sm" onClick={() => navigate('/report')}>
+            <Button size="sm" onClick={() => router.push('/report')}>
               Report a Problem
             </Button>
           </div>
@@ -69,11 +71,11 @@ export default function Landing() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
                 </svg>
               }
-              onClick={() => navigate('/report')}
+              onClick={() => router.push('/report')}
             >
               Report a Problem
             </Button>
-            <Button size="lg" variant="outline" onClick={() => navigate('/track')}>
+            <Button size="lg" variant="outline" onClick={() => router.push('/track')}>
               Track a Report
             </Button>
           </div>
@@ -81,9 +83,9 @@ export default function Landing() {
 
         <div className="bg-white rounded-2xl p-4 shadow-sm border border-border-default">
           <img
-            src={heroImage}
-            alt="EcoConnect Ekiti community reporting"
-            className="w-full h-64 object-cover rounded-xl"
+            src="/hero-image.jpg"
+            alt="Community Hero"
+            className="w-full max-h-[400px] object-cover rounded-xl shadow-md"
           />
         </div>
       </section>
@@ -111,7 +113,7 @@ export default function Landing() {
             Submit a report with a photo and location. Our team and AI triage it quickly.
           </p>
           <div className="mt-6">
-            <Button variant="secondary" size="lg" onClick={() => navigate('/report')}>
+            <Button variant="secondary" size="lg" onClick={() => router.push('/report')}>
               Report a Problem
             </Button>
           </div>

@@ -3,9 +3,11 @@
   "private": true,
   "packageManager": "pnpm@11.18.0",
   "scripts": {
+    "dev": "pnpm --filter @ecoconnect/web dev",
     "dev:web": "pnpm --filter @ecoconnect/web dev",
+    "build": "pnpm --filter @ecoconnect/web build",
     "build:web": "pnpm --filter @ecoconnect/web build",
-    "dev:api": "pnpm --filter @ecoconnect/api dev",
-    "build": "pnpm -r build"
+    "start": "pnpm --filter @ecoconnect/web start",
+    "dev:api": "pnpm --filter @ecoconnect/api dev"
   }
 }

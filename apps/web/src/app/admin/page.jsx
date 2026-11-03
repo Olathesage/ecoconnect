@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
-import { Button, SeverityChip, StatusBadge } from '../components'
-import { SAMPLE_REPORTS, STATUSES, STATUS_LABELS } from '../data/sampleReports'
+'use client'
 
-export default function AdminDashboard() {
-  const navigate = useNavigate()
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Button, SeverityChip, StatusBadge } from '@/components'
+import { SAMPLE_REPORTS, STATUSES, STATUS_LABELS } from '@/data/sampleReports'
+
+export default function AdminDashboardPage() {
+  const router = useRouter()
   const [reports, setReports] = useState(SAMPLE_REPORTS)
   const [filter, setFilter] = useState('all')
   const [isLoading, setIsLoading] = useState(true)
@@ -14,30 +17,32 @@ export default function AdminDashboard() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('/api/admin/stats', { credentials: 'include' })
+        const response = await fetch('/api/admin/stats')
         if (response.ok) {
           setIsAuthenticated(true)
+        } else {
+          router.replace('/admin/login')
         }
       } catch {
-        // Stay unauthenticated when the API is unreachable.
+        router.replace('/admin/login')
       } finally {
         setIsCheckingAuth(false)
       }
     }
     checkAuth()
-  }, [])
+  }, [router])
 
   useEffect(() => {
     if (!isAuthenticated) return
     const loadReports = async () => {
       try {
-        const reportsResponse = await fetch('/api/admin/reports', { credentials: 'include' })
+        const reportsResponse = await fetch('/api/admin/reports')
         const reportsData = await reportsResponse.json().catch(() => null)
-        if (reportsResponse.ok && Array.isArray(reportsData?.items)) {
+        if (reportsResponse.ok && Array.isArray(reportsData?.items) && reportsData.items.length > 0) {
           setReports(reportsData.items)
         }
       } catch {
-        // Keep the last known in-memory state when the API is unreachable.
+        // Keep the last known state
       } finally {
         setIsLoading(false)
       }
@@ -45,12 +50,20 @@ export default function AdminDashboard() {
     loadReports()
   }, [isAuthenticated])
 
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/logout', { method: 'POST' })
+    } finally {
+      router.push('/admin/login')
+    }
+  }
+
   if (isCheckingAuth) {
     return (
       <div className="min-h-screen bg-page-bg">
         <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-border-default text-center">
-            <p className="text-sm text-body-text">Loading...</p>
+            <p className="text-sm text-body-text">Checking admin authentication...</p>
           </div>
         </main>
       </div>
@@ -58,7 +71,7 @@ export default function AdminDashboard() {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/admin/login" replace />
+    return null
   }
 
   const visibleReports = filter === 'all' ? reports : reports.filter((r) => r.status === filter)
@@ -79,9 +92,14 @@ export default function AdminDashboard() {
               Review and route community reports in Ikole and Oye.
             </p>
           </div>
-          <Button variant="primary" size="sm" onClick={() => navigate('/')}>
-            Back to Home
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="sm" onClick={handleLogout}>
+              Sign Out
+            </Button>
+            <Button variant="outline" size="sm" onClick={() => router.push('/')}>
+              Back to Home
+            </Button>
+          </div>
         </div>
 
         {/* Stats */}
@@ -131,9 +149,9 @@ export default function AdminDashboard() {
           )}
           {visibleReports.map((report) => (
             <button
-              key={report.id}
+              key={report.id || report.reference}
               type="button"
-              onClick={() => navigate(`/admin/reports/${report.id}`)}
+              onClick={() => router.push(`/admin/reports/${report.id || report.reference}`)}
               className="w-full text-left bg-white rounded-2xl p-6 shadow-sm border border-border-default hover:border-emerald-brand transition-colors duration-150"
             >
               <div className="flex flex-wrap items-center justify-between gap-2">
@@ -145,7 +163,9 @@ export default function AdminDashboard() {
                 <span className="text-xs font-medium text-body-text capitalize">{report.category?.replace('_', ' ')}</span>
               </div>
               <p className="text-sm text-body-text mt-2">{report.location_text}</p>
-              <p className="text-xs text-body-text mt-2">Submitted {String(report.createdAt || report.created_at || '').slice(0, 10)}</p>
+              <p className="text-xs text-body-text mt-2">
+                Submitted {String(report.createdAt || report.created_at || report.submittedAt || '').slice(0, 10)}
+              </p>
             </button>
           ))}
         </section>

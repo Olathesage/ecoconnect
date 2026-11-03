@@ -1,16 +1,61 @@
-# React + Vite
+# EcoConnect Ekiti (Unified Next.js Full-Stack App)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+EcoConnect Ekiti is a community reporting and AI-powered triage platform for Ikole and Oye in Ekiti State.
 
-Currently, two official plugins are available:
+This application is built with **Next.js 15 (App Router)**, uniting both the frontend UI and the backend API routes into a single full-stack deployable package.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- **Public Reporting**: File complaints with descriptions, landmarks, GPS locations, and photo attachments.
+- **AI Triage Engine**: Gemma 4 / Gemini analysis to categorize issues (waste, drainage, road, etc.), assign severity, detect language, and draft forwarding messages.
+- **Public Tracking**: Track complaints in real-time from `pending` -> `forwarded` -> `in_progress` -> `resolved`.
+- **Admin Portal**: Secure PIN authentication with HMAC session cookies, complaint review dashboard, status transitions, and agency directory.
+- **Single Deployment**: Frontend pages and backend APIs are co-located under `src/app/`, deployable in one single step to Vercel, Node.js, or Docker.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Getting Started
 
-## Expanding the Oxlint configuration
+### 1. Environment Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Copy `.env.example` to `.env.local`:
+```bash
+cp .env.example .env.local
+```
+
+Configure your environment variables:
+- `SUPABASE_URL` & `SUPABASE_SERVICE_ROLE_KEY`: Supabase project credentials
+- `ADMIN_PIN`: Secret admin PIN (e.g. `ololadethegreat1`)
+- `SESSION_SECRET`: Secret key for HMAC cookie signing
+- `GEMMA_API_KEY`: Google Gemini / Gemma API key
+- `GEMMA_MODEL`: `gemma-4-26b-a4b-it`
+
+### 2. Development
+
+Run the development server from the repository root:
+```bash
+pnpm dev
+```
+or directly inside `apps/web`:
+```bash
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+### 3. Production Build & Deployment
+
+Build the app:
+```bash
+pnpm build
+```
+
+Start the production server:
+```bash
+pnpm start
+```
+
+### Deploying to Vercel
+
+When deploying to Vercel:
+1. Set the Root Directory to `apps/web`.
+2. Add the environment variables from `.env.example`.
+3. Deploy! Frontend and `/api/*` routes deploy automatically as serverless handlers.

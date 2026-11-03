@@ -1,9 +1,12 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Button, TextInput } from '../components'
+'use client'
 
-export default function AdminLogin() {
-  const navigate = useNavigate()
+import { useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { Button, TextInput } from '@/components'
+
+export default function AdminLoginPage() {
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [pin, setPin] = useState('')
   const [hasError, setHasError] = useState(false)
@@ -26,7 +29,7 @@ export default function AdminLogin() {
         setFormError(data.error || 'Invalid admin PIN.')
         return
       }
-      navigate('/admin')
+      router.push('/admin')
     } catch {
       setFormError('Unable to reach the EcoConnect server. Please try again.')
     } finally {
@@ -37,6 +40,12 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen bg-page-bg">
       <main className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        <div className="mb-4">
+          <Link href="/" className="text-sm text-body-text hover:text-emerald-brand font-medium">
+            &larr; Back to Home
+          </Link>
+        </div>
+
         <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-border-default">
           <h1 className="text-2xl font-extrabold text-heading-text">Admin Login</h1>
           <p className="text-body-text text-sm mt-1">

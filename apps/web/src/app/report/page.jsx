@@ -1,7 +1,10 @@
+'use client'
+
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Button, TextArea, TextInput } from '../components'
-import { CATEGORIES } from '../data/sampleReports'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { Button, TextArea, TextInput } from '@/components'
+import { CATEGORIES } from '@/data/sampleReports'
 
 const initialForm = {
   location: '',
@@ -18,8 +21,8 @@ const severityOptions = [
 const inactiveSeverity =
   'bg-white text-body-text border border-border-default hover:bg-soft-green'
 
-export default function Report() {
-  const navigate = useNavigate()
+export default function ReportPage() {
+  const router = useRouter()
   const [form, setForm] = useState(initialForm)
   const [category, setCategory] = useState('')
   const [severity, setSeverity] = useState('')
@@ -57,7 +60,7 @@ export default function Report() {
         return
       }
 
-      navigate('/report/success', { state: { reference: data.reference } })
+      router.push(`/report/success?ref=${encodeURIComponent(data.reference || 'ECO-0001')}`)
     } catch {
       setFormError('Unable to reach the EcoConnect server. Please try again.')
     } finally {
@@ -71,7 +74,7 @@ export default function Report() {
         {/* Page header */}
         <div className="mb-6">
           <Link
-            to="/"
+            href="/"
             className="text-sm text-body-text hover:text-emerald-brand font-medium"
           >
             &larr; Back to Home
