@@ -3,6 +3,13 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { config } from './config'
 
+function getSessionSecret(): string {
+  if (!config.sessionSecret) {
+    throw new Error('SESSION_SECRET is not configured')
+  }
+
+  return config.sessionSecret
+}
 export const SESSION_COOKIE_NAME = 'ecoconnect_admin_session'
 export const SESSION_TTL_MS = 8 * 60 * 60 * 1000 // 8 hours
 
@@ -12,7 +19,7 @@ export interface SessionPayload {
 }
 
 export function signPayload(payload: SessionPayload): string {
-  const secret = config.sessionSecret || 'dev-session-secret'
+  const secret = getSessionSecret()
   const base64 = Buffer.from(JSON.stringify(payload)).toString('base64url')
   const signature = createHmac('sha256', secret).update(base64).digest('base64url')
   return `${base64}.${signature}`

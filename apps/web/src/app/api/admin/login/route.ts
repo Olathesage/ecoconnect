@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   try {
     const body = (await req.json().catch(() => ({}))) as { pin?: string }
     const pin = body.pin
-    const adminPin = config.adminPin || 'ololadethegreat1'
+    const adminPin = config.adminPin
 
     if (!adminPin || !pin) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
